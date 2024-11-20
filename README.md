@@ -37,29 +37,37 @@ Reference https://docs.expo.dev/build/setup/
 
 ##### Install the latest EAS CLI & Log in to your Expo account
 
-- npm install -g eas-cli
-- eas login
+   ```bash
+   npm install -g eas-cli
+   ```
+   ```bash
+   eas login
+   ```
 ##### Configure the project
 
-- eas build: configure
-
+   ```bash
+   eas build: configure
+   ```
 #### Build for app stores
 
-eas build --platform android
-eas build --platform ios
+   ```bash
+   eas build --platform android
+   ```
 
-eas build --platform all
+   ```bash
+   eas build --platform ios
+   ```
+
+   ```bash
+   eas build --platform all
+   ```
 
 #### Build for Android Emulator/device or iOS Simulator
-
-Reference
 
 https://docs.expo.dev/build-reference/apk/
 https://docs.expo.dev/build-reference/simulators/
 
 ### Production builds locally
-
-Reference
 
 https://docs.expo.dev/workflow/prebuild/
 https://reactnative.dev/docs/signed-apk-android
