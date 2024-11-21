@@ -43,7 +43,7 @@ export default function HomeScreen() {
       if (status.isLoaded) {
         setAudioStatus(status);
       }
-    }, 200);
+    }, 100);
 
     return () => {
       clearInterval(timer);
@@ -104,6 +104,19 @@ export default function HomeScreen() {
     },
     [],
   );
+
+  useEffect(() => {
+    if (
+      currentCommentIndex > 0 &&
+      currentCommentIndex < (audio?.comments.length || 0)
+    ) {
+      listRef.current?.scrollToIndex({
+        index: currentCommentIndex,
+        animated: true,
+        viewPosition: 0.5,
+      });
+    }
+  }, [audio?.comments.length, currentCommentIndex]);
 
   return (
     <KeyboardAvoidingView
