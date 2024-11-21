@@ -122,7 +122,7 @@ export default function HomeScreen() {
   );
 
   useEffect(() => {
-    if (currentCommentIndex > 0 && currentCommentIndex < commentsLength) {
+    if (currentCommentIndex >= 0 && currentCommentIndex < commentsLength) {
       listRef.current?.scrollToIndex({
         index: currentCommentIndex,
         animated: true,

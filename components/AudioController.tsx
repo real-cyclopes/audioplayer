@@ -5,7 +5,6 @@ import duration from "dayjs/plugin/duration";
 
 import { PlayButtonsGroup } from "./PlayButtonsGroup";
 import { CustomProgressBar } from "./remap";
-import { Float } from "react-native/Libraries/Types/CodegenTypes";
 
 dayjs.extend(duration);
 
