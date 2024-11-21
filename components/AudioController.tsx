@@ -29,8 +29,7 @@ export function AudioController({
     <View className="flex w-full flex-col items-center gap-3 pb-10">
       <View className="w-full">
         <CustomProgressBar
-          // progress={Math.round((currentTime * 100) / duration) / 100}
-          progress={(currentTime / duration) as Float}
+          animatedValue={currentTime / duration}
           color={MD2Colors.amber300}
           className="h-3"
         />
