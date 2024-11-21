@@ -70,25 +70,41 @@ export default function HomeScreen() {
   }, [audioState]);
 
   const currentTime = audioState?.positionMillis || 0;
-  const currentCommentIndex =
+  const commentsLength = audio?.comments.length || 0;
+  let currentCommentIndex =
     audio?.comments.findIndex(
       comment => comment.start <= currentTime && currentTime < comment.end,
     ) || 0;
+
+  if (audio && currentTime + 10 > audio.comments[commentsLength - 1].end) {
+    currentCommentIndex = commentsLength - 1; //audio play ended! make sure index is always in range.
+  }
 
   const handleSkip = (direction: "forward" | "backward") => {
     if (!audio) {
       return;
     }
 
-    const modifier = direction === "forward" ? 1 : -1;
-    const nextCommentIndex = Math.min(
-      Math.max(currentCommentIndex + modifier, 0),
-      audio.comments.length - 1,
-    );
+    let modifier = direction === "forward" ? 1 : -1;
 
-    const comment = audio.comments[nextCommentIndex];
+    let nextPosition = currentTime;
 
-    audioPlayer.setPositionAsync(comment.start);
+    let nextCommentIndex = Math.max(currentCommentIndex + modifier, 0); // prevent underflow issue.
+
+    if (
+      currentTime + 10 > audio.comments[commentsLength - 1].end &&
+      direction === "backward"
+    ) {
+      nextCommentIndex = currentCommentIndex; // edge case. play the last phrase again when audio play ended
+    }
+
+    if (nextCommentIndex === commentsLength) {
+      nextPosition = audio.comments[commentsLength - 1].end; // prevent overflow issue.
+    } else {
+      nextPosition = audio.comments[nextCommentIndex].start;
+    }
+
+    audioPlayer.setPositionAsync(nextPosition);
   };
 
   const onScrollToIndexFailed = useCallback(
@@ -106,17 +122,14 @@ export default function HomeScreen() {
   );
 
   useEffect(() => {
-    if (
-      currentCommentIndex > 0 &&
-      currentCommentIndex < (audio?.comments.length || 0)
-    ) {
+    if (currentCommentIndex > 0 && currentCommentIndex < commentsLength) {
       listRef.current?.scrollToIndex({
         index: currentCommentIndex,
         animated: true,
         viewPosition: 0.5,
       });
     }
-  }, [audio?.comments.length, currentCommentIndex]);
+  }, [commentsLength, currentCommentIndex]);
 
   return (
     <KeyboardAvoidingView
